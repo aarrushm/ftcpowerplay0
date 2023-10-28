@@ -9,18 +9,19 @@ import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-public class Motor1 {
+public class transfer {
 
     /* Declare OpMode members. */
     //private ElapsedTime runtime = new ElapsedTime();
     protected DcMotorEx motor = null;
-    private Telemetry telemetry = null;
-    protected String name = "";
 
-    public Motor1(HardwareMap hardwareMap, Telemetry t) {
+    private Telemetry telemetry = null;
+
+
+    public transfer(HardwareMap hardwareMap, Telemetry t) {
 
         //motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
-
+        motor = hardwareMap.get(DcMotorEx.class, "transfer");
         telemetry = t;
     }
 
@@ -32,10 +33,6 @@ public class Motor1 {
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    protected void setModeEncoder() {
-        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-    }
-
     private void setVelocity(double motorVelocity) {
         motor.setVelocity(motorVelocity);
     }
@@ -45,19 +42,8 @@ public class Motor1 {
     }
 
     public void stop() {
-        //motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
+
         setVelocity(0);
-
-    }
-
-    public void holdPosition () {
-        setModeRunToPosition ();
-        int position = motor.getCurrentPosition();
-        RobotLog.d ("%s - Current position = %d", name, position);
-//motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-//setVelocity (0);
-        setTargetPosition(position);
-       // motor.setPower(0.5);
 
     }
 
@@ -68,7 +54,7 @@ public class Motor1 {
         motor.setDirection(DcMotor.Direction.FORWARD);
         setTargetPosition(targetPosition);
         //motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motor.setPower(1.5);
+        motor.setPower(0.8);
         while (motor.isBusy());
         RobotLog.d("Motor.runforward done");
         //motor.setPower(0);
@@ -81,7 +67,7 @@ public class Motor1 {
         motor.setDirection(DcMotor.Direction.REVERSE);
         motor.setTargetPosition(targetPosition);
         //motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motor.setPower(1.5);
+        motor.setPower(0.8);
         while (motor.isBusy());
         //motor.setPower(0);
     }
@@ -91,8 +77,6 @@ public class Motor1 {
         motor.setDirection(DcMotor.Direction.FORWARD);
         //velocity input
         setVelocity(motorVelocity);
-        int position = motor.getCurrentPosition();
-        RobotLog.d ("%s - Current position = %d", name, position);
         //time input
         if (timeMs > 0) {
             try {
@@ -109,8 +93,6 @@ public class Motor1 {
         motor.setDirection(DcMotor.Direction.REVERSE);
         //velocity input
         setVelocity(motorVelocity);
-        int position = motor.getCurrentPosition();
-        RobotLog.d ("%s - Current position = %d", name, position);
         //time input
         if (timeMs > 0) {
             try {

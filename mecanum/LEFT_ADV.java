@@ -16,7 +16,7 @@ public class LEFT_ADV extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        VuforiaFTC vf = new VuforiaFTC(hardwareMap, telemetry);
+        //VuforiaFTC vf = new VuforiaFTC(hardwareMap, telemetry);
         Slide rightslide = new Slide(hardwareMap, telemetry,"rightslide");
         Slide leftslide = new Slide(hardwareMap, telemetry,"leftslide");
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -25,7 +25,7 @@ public class LEFT_ADV extends LinearOpMode {
         rightslide.MoveToLevel(Slide.level.LEVEL_0);
         leftslide.MoveToLevel(Slide.level.LEVEL_0);
         intake.forwardMAX();
-        VuforiaFTC.barcode_level BarcodeLevel = vf.BarcodeLevel();
+        //VuforiaFTC.barcode_level BarcodeLevel = vf.BarcodeLevel();
 
         Pose2d startPose = new Pose2d(-44, -69.3, Math.toRadians(90));
 
@@ -129,7 +129,7 @@ public class LEFT_ADV extends LinearOpMode {
             intake.reverseMAX();
             sleep(600);
 
-
+/*
             if (BarcodeLevel == VuforiaFTC.barcode_level.SLEEVE_1){
 
                 //ps 2
@@ -165,6 +165,8 @@ public class LEFT_ADV extends LinearOpMode {
             // save the current pose
             PoseStorage.currentPose = drive.getPoseEstimate();
             break;
+
+ */
         }
     }
 }

@@ -4,6 +4,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -14,9 +15,15 @@ public class DRIVER_CONTROL extends LinearOpMode /*implements Runnable*/ {
 
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
-    private Slide rightslide = null;
     private Slide.level level = Slide.level.LEVEL_0_DC;
-    private Slide leftslide = null;
+    private slidev2 slide = null;
+    private intake intake = null;
+
+    //private transfer transfer = null;
+
+    private Slide outtake = null;
+
+    private Slide transfer = null;
     //private boolean opmodeactive = false;
     @Override
     public void runOpMode() {
@@ -33,9 +40,11 @@ public class DRIVER_CONTROL extends LinearOpMode /*implements Runnable*/ {
         waitForStart();
         runtime.reset();
 
-        Servos intake = new Servos(hardwareMap, telemetry, false);
-        rightslide = new Slide(hardwareMap, telemetry, "rightslide");
-        leftslide = new Slide(hardwareMap, telemetry, "leftslide");
+        intake = new intake(hardwareMap, telemetry);
+        transfer = new Slide(hardwareMap, telemetry, "transfer");
+        //slide = new Slide(hardwareMap, telemetry, "slide");
+        slide = new slidev2(hardwareMap,telemetry);
+        outtake = new Slide(hardwareMap, telemetry, "outtake");
 
         //Thread t = new Thread(this, "arm thread");
         //t.start();
@@ -50,19 +59,35 @@ public class DRIVER_CONTROL extends LinearOpMode /*implements Runnable*/ {
             drive.setWeightedDrivePower(
                     new Pose2d(
                             -gamepad1.left_stick_y*velocity,
-                            -gamepad1.left_stick_x*velocity,
-                            -gamepad1.right_stick_x*velocity
+                            gamepad1.left_stick_x*velocity,
+                            gamepad1.right_stick_x*velocity
                     )
             );
 
 
             // intake + outtake
-            if (gamepad2.right_bumper == true) {
-                intake.forwardMAX();
-            } else if (gamepad2.left_bumper == true) {
-                intake.reverseMAX();
+            if (gamepad1.right_bumper == true) {
+                intake.runbackward(1000,0);
+            } else if (gamepad1.left_bumper == true) {
+                intake.stop();
+            }
+
+            /*if (gamepad1.b == true) {
+                transfer.runforward(600,0);
+            } else if (gamepad1.x == true) {
+                transfer.runbackward(600,0);
             } else{
-                intake.holdPosition();
+                transfer.stop();
+            }*/
+
+            if (gamepad1.b == true) {
+                level = Slide.level.LEVEL_0;
+                transfer.MoveToLevelAsync(level);
+                //RobotLog.d("Button click A");
+            } else if (gamepad1.x == true) {
+                level = Slide.level.AUTO_2;
+                transfer.MoveToLevelAsync(level);
+                //RobotLog.d("Button click X");
             }
 
             if (gamepad1.left_trigger >= 0.8) {
@@ -74,31 +99,31 @@ public class DRIVER_CONTROL extends LinearOpMode /*implements Runnable*/ {
             }
 
             if (gamepad1.a == true) {
-                level = Slide.level.LEVEL_0;
-                rightslide.MoveToLevelAsync(level);
-                leftslide.MoveToLevelAsync(level);
+                //level = Slide.level.LEVEL_0;
+                //slide.MoveToLevelAsync(level);
+                slide.runforward(1000,0);
                 //RobotLog.d("Button click A");
-            } else if (gamepad1.b == true) {
+            /*} else if (gamepad1.b == true) {
                 level = Slide.level.LEVEL_1_DC;
-                rightslide.MoveToLevelAsync(level);
-                leftslide.MoveToLevelAsync(level);
-                //RobotLog.d("Button click B");
-            } else if (gamepad1.x == true) {
-                level = Slide.level.LEVEL_2_DC;
-                rightslide.MoveToLevelAsync(level);
-                leftslide.MoveToLevelAsync(level);
-                //RobotLog.d("Button click X");
-            } else if (gamepad2.a == true) {
-                level = Slide.level.AUTO_2;
-                rightslide.MoveToLevelAsync(level);
-                leftslide.MoveToLevelAsync(level);
-                //RobotLog.d("Button click X");
+                slide.MoveToLevelAsync(level);
+                //RobotLog.d("Button click B");*/
             } else if (gamepad1.y == true) {
+                //level = Slide.level.LEVEL_2_DC;
+                //slide.MoveToLevelAsync(level);
+                slide.runbackward(1000,0);
+                //RobotLog.d("Button click X");
+            } else {
+                slide.stop();
+            }
 
-                level = Slide.level.LEVEL_3;
-                rightslide.MoveToLevelAsync(level);
-                leftslide.MoveToLevelAsync(level);
-                //RobotLog.d("Button click Y");
+            if (gamepad1.left_stick_button == true) {
+                level = Slide.level.LEVEL_0;
+                outtake.MoveToLevelAsync(level);
+                //RobotLog.d("Button click A");
+            } else if (gamepad1.right_stick_button == true) {
+                level = Slide.level.LEVEL_1_DC;
+                outtake.MoveToLevelAsync(level);
+                //RobotLog.d("Button click X");
             }
 
         }

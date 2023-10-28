@@ -9,12 +9,12 @@ public class Slide extends Motor1 implements Runnable {
     static final int LEVEL_0_TP_DC = 0;
     static final int LEVEL_0_TP = 0;
     static final int reverse = 0;
-    static final int AUTO_2_TP = 400;
-    static final int LEVEL_1_TP = 1200;
-    static final int LEVEL_1_TP_DC = 1300;
-    static final int LEVEL_2_TP = 2250;
-    static final int LEVEL_2_TP_DC = 2130;
-    static final int LEVEL_3_TP = -420;
+    static final int AUTO_2_TP = 70;
+    static final int LEVEL_1_TP = 500;
+    static final int LEVEL_1_TP_DC = 130;
+    static final int LEVEL_2_TP = 1900;
+    static final int LEVEL_2_TP_DC = 1900;
+    static final int LEVEL_3_TP = 2900;
     static final int LEVEL_3_TP_DC = 2900;
 
 
